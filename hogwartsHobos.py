@@ -42,17 +42,22 @@ class Hobo:
         self.runningResults=[[]]
         self.runningL0=[] #time between trains
         self.runningL1=[] #time of train on track
-        self.positionHistory=[]
+        self.positionHistory=[0]
+
     
     def getSuggestion(self,listOfTrackVals):
         self.info[1]=listOfTrackVals
 
-    def act(self,numTrack=0):
+    def act(self):
+        
+        #based on my calculations i should jump to:
+        trackSafeness = self.doMaths()
 
-        if numTrack!=None:
-            self.position = numTrack
+        #if my calculations say I have a better than 60% chance of being safe, ignore paper plane
+        if trackSafeness and (max(trackSafeness)>60):
+            self.position = trackSafeness.index(max(trackSafeness))
             self.positionHistory.append(self.position)
-            print("DID MATH JUMPING TO: "+str(numTrack))
+            print("DID MATH JUMPING TO: "+str(self.position))
         #basic logic
         #find an empty track, jump to it
         elif self.info[1]==[]:
@@ -125,7 +130,7 @@ class Hobo:
                     trackSafeness.append(100-(100*poisson(len(x)+1,runningMeanL1)))
 
             print("TRACK SAFENESS: "+str(trackSafeness))
-            return (trackSafeness.index(max(trackSafeness)))
+            return (trackSafeness)
 
 
 
@@ -227,13 +232,17 @@ def simulateGame(L0,L1,numTrains,hobo=0):
         if trackResults[dumbledore.position][i]==1:
             dumbledore.hp-=1
             if dumbledore.hp==0:
-                gameLength=i
+                score=i
                 break
 
         #GET PAPER PLANE
         paperPlane=[]
-        for y in range(numTrains):
-            paperPlane.append(random.randint(0,1))
+        if (random.randint(1,100)<=60):
+            for y in range(numTrains):
+                paperPlane.append(trackResults[y][i])
+        else:
+            for y in range(numTrains):
+                paperPlane.append(random.randint(0,1))
         dumbledore.getSuggestion(paperPlane)
         print("PAPER PLANE INFO: "+str(paperPlane))
 
@@ -258,22 +267,33 @@ def simulateGame(L0,L1,numTrains,hobo=0):
         #jump to the safest track
 
         #JUMP
-        dumbledore.act(dumbledore.doMaths())
+        dumbledore.act()
 
-    # fig,ax = plt.subplots(numTrains+1)
-    # fig.suptitle("Presence of Trains on Tracks every second")
-    # for i in range(len(trackResults)):
-        
-    #     ax[i].plot([x for x in range (60)],trackResults[i])
-    #     ax[i].set_title("Track "+str(i))
-    print(dumbledore.positionHistory)
-    # ax[len(trackResults)].plot([x for x in range (60)],dumbledore.positionHistory)
+
+    fig,ax = plt.subplots(numTrains)
+    fig.suptitle("Presence of Trains on Tracks every second")
     
-    return "GAME OVER! SCORE: " +str(gameLength) + " L0: "+str(sum(dumbledore.runningL0)/(len(dumbledore.runningL0)))+" L1: "+str(sum(dumbledore.runningL1)/(len(dumbledore.runningL1)))
+    for i in range(len(trackResults)):
+        hoboHistoryOnThisTrack=[]
+        deathTrack=0
+        for j in range(len (dumbledore.positionHistory)):
+            if dumbledore.positionHistory[j]==i:
+                hoboHistoryOnThisTrack.append(.5)
+                if j == score:
+                    deathTrack = i
+            else:
+                hoboHistoryOnThisTrack.append(None)
+        ax[i].plot([x for x in range (60)],trackResults[i],hoboHistoryOnThisTrack,'ro')
+        ax[i].set_title("Track "+str(i))
+    ax[deathTrack].text(score,.5, "HOBO DIED")
+    plt.show()
+
+
+    return "GAME OVER! SCORE: " +str(score) + " L0: "+str(sum(dumbledore.runningL0)/(len(dumbledore.runningL0)))+" L1: "+str(sum(dumbledore.runningL1)/(len(dumbledore.runningL1)))
         #Hobo action every second
 # track = TrainTrack(5,3)
 # track,simulateTrains(5,3,2)
-print(simulateGame(5,3,2))
+print(simulateGame(5,3,4))
 
 
 
