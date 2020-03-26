@@ -123,11 +123,27 @@ class Hobo:
                 for x in self.runningResults:
                     if x[0]== 0: #track is empty
                         #calculate poisson
-                        trackSafeness.append(100*poisson.poisson(len(x)+1,runningMeanL0))
+                        getValues = poisson.poissonValues(runningMeanL0)
+                        #print(getValues)
+                        #find key which is len(x)+1
+                        key=len(x)+1
+                        if key in getValues.keys():
+                            trackSafeness.append(100-getValues[key])
+                        else:
+                            trackSafeness.append(100)
+                        #trackSafeness.append(100*poisson.poisson(len(x)+1,runningMeanL0))
 
                     if x[0]==1: #track has train
-
-                        trackSafeness.append(100-(100*poisson.poisson(len(x)+1,runningMeanL1)))
+                        
+                        getValues = poisson.poissonValues(runningMeanL1)
+                        #print(getValues)
+                        #find key which is len(x)+1
+                        key=len(x)+1
+                        if key in getValues.keys():
+                            trackSafeness.append(100-getValues[key])
+                        else:
+                            trackSafeness.append(100)
+                        # trackSafeness.append(100*poisson.poisson(len(x)+1,runningMeanL1))
 
                 # print("TRACK SAFENESS: "+str(trackSafeness))
                 return (trackSafeness)

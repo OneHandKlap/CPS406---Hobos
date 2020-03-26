@@ -8,13 +8,13 @@ class TrainTrack:
         self.isWaiting=False
         self.trackOccupancy=[0]
     def getTimeBetweenTrains(self):
-        r=random.randint(1,100)
+        r=random.randint(0,100)
         for key, val in self.L0.items():
             if r<= val:
                 return key
         return list(self.L0.keys())[len(self.L0.keys())-1]
     def getHowLong(self):
-        r=random.randint(1,100)
+        r=random.randint(0,100)
         for key, val in self.L1.items():
             if r<= val:
                 return key
@@ -24,7 +24,7 @@ class TrainTrack:
         thisTrain=0
         if(random.randint(1,100)>50):
             self.isWaiting=True
-            waitFor=self.getHowLong()
+            waitFor=self.getTimeBetweenTrains()
         for i in range (1,duration):
             # print("SECOND : "+str(i))
             if self.isWaiting==True and i >= waitFor:
@@ -35,9 +35,9 @@ class TrainTrack:
                 self.hasTrain=True
                 self.isWaiting=True
                 thisTrain = i + self.getHowLong()
-                waitFor = waitFor + self.getTimeBetweenTrains()
+                waitFor = thisTrain + self.getTimeBetweenTrains()
             if self.hasTrain == True:
-                self.trackOccupancy.append(0)
-            else:
                 self.trackOccupancy.append(1)
+            else:
+                self.trackOccupancy.append(0)
         return self.trackOccupancy
