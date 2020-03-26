@@ -136,7 +136,7 @@ def simulateGame(L0,L1,numTrains,lengthOfGame,hoboSmartness,trackResults=[]):
 results=[[] for x in range(4)]
 for i in range(4):
     print("CALCULATING AVERAGE OF SMARTNESS : "+str(i+1))
-    for j in range(100):
+    for j in range(10):
 
         if results[i]!= None:
             results[i].append(simulateGame(5,3,2,100,i+1))
