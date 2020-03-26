@@ -1,5 +1,7 @@
 import math
+from decimal import Decimal
 e=math.e
+
 class my_dictionary(dict): 
   
     # __init__ function 
@@ -13,9 +15,9 @@ class my_dictionary(dict):
 
 def poisson(k, l):
     exp = math.pow(e,-l)
-    lambdaPower = math.pow(l,k)
-    num = exp*lambdaPower
-    denom = math.factorial(k)
+    lambdaPower = l**k
+    num = Decimal(exp*lambdaPower)
+    denom = Decimal(math.factorial(k))
     return num/denom
 
 def poissonValues(mean):
