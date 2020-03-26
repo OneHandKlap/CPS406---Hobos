@@ -43,20 +43,20 @@ class Hobo:
             trackSafeness = self.doMaths()
             # print(trackSafeness)
             #if my calculations say I have a better than 90% chance of being safe, go to the best odds
-            
+            if trackSafeness and (max(trackSafeness)>60) and (1 not in self.info[0]):
+                # print("TRUSTING MY HEAD")
+                self.position = trackSafeness.index(max(trackSafeness))
+                self.positionHistory.append(self.position)
+                # print("DID MATH JUMPING TO: "+str(self.position))
+            else:
                 # print("TRUSTING MY GUT")
-            for i in range(len(self.info[0])):
-                if self.info[0][i]==0:
-                    self.position = i
-                    # print("FOUND EMPTY TRACK, JUMPING TO: "+str(i))
-                    self.positionHistory.append(self.position)
-                    return
-            #self.positionHistory.append(self.position)
-
-            # print("TRUSTING MY HEAD")
-            self.position = trackSafeness.index(max(trackSafeness))
-            self.positionHistory.append(self.position)
-            # print("DID MATH JUMPING TO: "+str(self.position))
+                for i in range(len(self.info[0])):
+                    if self.info[0][i]==0:
+                        self.position = i
+                        # print("FOUND EMPTY TRACK, JUMPING TO: "+str(i))
+                        self.positionHistory.append(self.position)
+                        return
+                self.positionHistory.append(self.position)
         else:
             #USES RUNNING MEANS TO DETERMINE THE LIKELIHOOD THAT A TRACK STATE WILL CHANGE, AND BECOME SAFE NEXT SECOND, IF >90% JUMP, ELSE JUMP TO FIRST FROM PAPER PLANE
             #based on my calculations i should jump to:
