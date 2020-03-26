@@ -7,13 +7,7 @@ import random
 from hobo import Hobo
 from traintrack  import TrainTrack
 import numpy as np
-
 from mpl_toolkits import mplot3d
-
-
-
-
-
 
 def simulateTrains(L0,L1,numTrains,duration):
     tracks = [TrainTrack(L0,L1) for x in range(numTrains)]
@@ -139,53 +133,53 @@ def simulateGame(L0,L1,numTrains,lengthOfGame,hoboSmartness,trackResults=[]):
 #BEGINNING OF TESTS
 
 
+results=[[] for x in range(4)]
+for i in range(4):
+    print("CALCULATING AVERAGE OF SMARTNESS : "+str(i+1))
+    for j in range(100):
 
-# for i in range(4):
-#     print("CALCULATING AVERAGE OF SMARTNESS : "+str(i+1))
-#     for j in range(100):
+        if results[i]!= None:
+            results[i].append(simulateGame(5,3,2,100,i+1))
+        else:
+            results[i]=[simulateGame(5,3,2,100,i+1)]
+    print(results[i])
 
-#         if results[i]!= None:
-#             results[i].append(simulateGame(4,3,2,100,i+1))
-#         else:
-#             results[i]=[simulateGame(4,3,2,100,i+1)]
-#     print(results[i])
-
-# print("SMARTNESS 1 AVG: "+str(mean(results[0])) +"\nSMARTNESS 2 AVG: "+str(mean(results[1]))+"\nSMARTNESS 3 AVG: "+str(mean(results[2]))+"\nSMARTNESS 4 AVG: "+str(mean(results[3])))
+print("SMARTNESS 1 AVG: "+str(mean(results[0])) +"\nSMARTNESS 2 AVG: "+str(mean(results[1]))+"\nSMARTNESS 3 AVG: "+str(mean(results[2]))+"\nSMARTNESS 4 AVG: "+str(mean(results[3])))
 
 
-fig = plt.figure(figsize = plt.figaspect(0.5))
+# fig = plt.figure(figsize = plt.figaspect(0.5))
 
-for numTrains in range(1,8):
+# for numTrains in range(1,8):
 
-    results=[]
-    L0axis=[]
-    L1axis=[]
-    for L0 in range(1,15):
-        for L1 in range(1,15):
-            #print("CALCULATING AVERAGE OF SMARTNESS : "+str(i+1))
-            for j in range(10):
+#     results=[]
+#     L0axis=[]
+#     L1axis=[]
+#     for L0 in range(1,15):
+#         for L1 in range(1,15):
+#             #print("CALCULATING AVERAGE OF SMARTNESS : "+str(i+1))
+#             for j in range(10):
 
-                if results!= None:
-                    results.append(simulateGame(L0,L1,numTrains,100,1))
-                else:
-                    results=[simulateGame(L0,L1,numTrains,100,1)]
-                L0axis.append(L0)
-                L1axis.append(L1)
+#                 if results!= None:
+#                     results.append(simulateGame(L0,L1,numTrains,100,3))
+#                 else:
+#                     results=[simulateGame(L0,L1,numTrains,100,3)]
+#                 L0axis.append(L0)
+#                 L1axis.append(L1)
 
     
-    ax = fig.add_subplot(4,2,numTrains, projection = '3d')
-    L0axis=np.array(L0axis)
-    L1axis=np.array(L1axis)
+#     ax = fig.add_subplot(4,2,numTrains, projection = '3d')
+#     L0axis=np.array(L0axis)
+#     L1axis=np.array(L1axis)
 
-    results=np.array(results)
+#     results=np.array(results)
 
-    ax.plot_trisurf(L0axis,L1axis,results,linewidth=0, antialiased=False)
-    title="Hobo 1 Trains: " +str(numTrains) +".png"
-    plt.title("Score Hobo Level 1 - #Trains: "+str(numTrains))
-    plt.xlabel("L0 mean")
-    plt.ylabel("L1 mean")
+#     ax.plot_trisurf(L0axis,L1axis,results,linewidth=0, antialiased=False)
+#     title="Hobo 3 Trains: " +str(numTrains) +".png"
+#     plt.title("Score Hobo Level 3 - #Trains: "+str(numTrains))
+#     plt.xlabel("L0 mean")
+#     plt.ylabel("L1 mean")
 
-plt.show()
+# plt.show()
 
 
 

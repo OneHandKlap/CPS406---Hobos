@@ -93,12 +93,12 @@ class Hobo:
                 if self.info[0][i]==1:
                     self.runningL0.append(len(self.runningResults[i]))
                     self.runningResults[i]=[]
-                    self.runningResults[i].append(self.info[0][i])
+                    self.runningResults[i].append(1)
 
                 if self.info[0][i]==0:
                     self.runningL1.append(len(self.runningResults[i]))
                     self.runningResults[i]=[]
-                    self.runningResults[i].append(self.info[0][i])
+                    self.runningResults[i].append(0)
         # except(IndexError):
         #     return (self.info[0])
         #     for i in range(len(self.info[0])):
@@ -119,15 +119,33 @@ class Hobo:
                 trackSafeness=[]
                 runningMeanL0=sum(self.runningL0)/(len(self.runningL0))
                 runningMeanL1=sum(self.runningL1)/(len(self.runningL1))
+                print(runningMeanL0)
+                print(runningMeanL1)
 
                 for x in self.runningResults:
                     if x[0]== 0: #track is empty
                         #calculate poisson
-                        trackSafeness.append(100*poisson.poisson(len(x)+1,runningMeanL0))
+                        getValues = poisson.poissonValues(runningMeanL0)
+                        #print(getValues)
+                        #find key which is len(x)+1
+                        key=len(x)+1
+                        if key in getValues.keys():
+                            trackSafeness.append(100-getValues[key])
+                        else:
+                            trackSafeness.append(100)
+                        #trackSafeness.append(100*poisson.poisson(len(x)+1,runningMeanL0))
 
                     if x[0]==1: #track has train
-
-                        trackSafeness.append(100-(100*poisson.poisson(len(x)+1,runningMeanL1)))
+                        
+                        getValues = poisson.poissonValues(runningMeanL1)
+                        #print(getValues)
+                        #find key which is len(x)+1
+                        key=len(x)+1
+                        if key in getValues.keys():
+                            trackSafeness.append(100-getValues[key])
+                        else:
+                            trackSafeness.append(100)
+                        # trackSafeness.append(100*poisson.poisson(len(x)+1,runningMeanL1))
 
                 # print("TRACK SAFENESS: "+str(trackSafeness))
                 return (trackSafeness)
