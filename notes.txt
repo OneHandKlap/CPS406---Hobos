@@ -1,0 +1,21 @@
+#TO DO: GRAPHICAL REPRESENTATION OF HOBO MOVEMENT, IMPLEMENT 60% VERACITY PAPER PLANE, IMPLEMENT 3 DECISION CASES
+
+#player profile # case 1: just jump to an empty track - hypothesis lowest survivability rate, based on number of tracks and his health
+#player profile # case 2: using paper planes - hypothesis surivability slightly increased, based on tracks,health, and % veracity of paper plane
+#player profile # case 3: using his memory and running average calculation - hypothesis survivability greatly increased but only towards the end,
+#player profile # case 4: blend of 2 and 3
+#player profile # case 5: genetic learning.
+
+
+
+
+TESTING NOTES:
+
+10 DIFFERENT RANDOM COMBINATIONS FOR L0, L1, NUMTRACKS
+    100 DIFFERENT ITERATIONS OF EACH PARTICULAR COMBINATION
+        INPUT INTO 4-5 DIFFERENT PLAYER PROFILES DETERMINED BY THEIR DECISION MAKING
+
+1000 TOTAL TEST CASES RUN AGAINST 4-5 DIFFERENT PLAYERS
+HIGHEST AVERAGE DETERMINES BEST WAY TO PLAY
+
+AVERAGE ACROSS ALL STORED AND EVALUATED
