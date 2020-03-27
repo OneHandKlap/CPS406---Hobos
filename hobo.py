@@ -17,8 +17,12 @@ class Hobo:
         self.info[1]=listOfTrackVals
 
     def act(self,smartness):
-        
-        if smartness == 1:
+
+        if smartness == 0:
+            self.position = random.randint(0,len(self.info[0])-1)
+            self.positionHistory.append(self.position)
+
+        elif smartness == 1:
             #THIS SMARTNESS LEVEL IS CHARACTERIZED BY MERELY JUMPING TO THE FIRST TRACK THAT IS EMPTY RIGHT NOW
             for i in range(len(self.info[0])):
                 if self.info[0][i]==0:
@@ -30,20 +34,30 @@ class Hobo:
             self.positionHistory.append(self.position)
         
         elif smartness == 2:
-            #THIS SMARTNESS LEVEL JUMPS TO THE FIRST EMPTY TRACK OUTLINED BY THE PAPER PLANE (WHICH PURPORTS TO KNOW WHAT THE STATE WILL BE NEXT SECOND)
-            for i in range(len(self.info[1])):
-                if self.info[1][i]==0:
-                    self.position = i
-                    # print("FOUND EMPTY TRACK (VIA AIRPLANE), JUMPING TO: "+str(i))
-                    self.positionHistory.append(self.position)
-                    return
-            self.positionHistory.append(self.position)
-        elif smartness == 3:
+            #THIS SMARTNESS LEVEL JUMPS TO THE FIRST EMPTY TRACK, IF THERE ARE NO GOOD OPTIONS,USE THE PAPER PLANE (WHICH PURPORTS TO KNOW WHAT THE STATE WILL BE NEXT SECOND)
+            if (1 not in self.info[0]):
+                for i in range(len(self.info[1])):
+                    if self.info[1][i]==0:
+                        self.position = i
+                        # print("FOUND EMPTY TRACK (VIA AIRPLANE), JUMPING TO: "+str(i))
+                        self.positionHistory.append(self.position)
+                        return
+                self.positionHistory.append(self.position)
+            else:
+                for i in range(len(self.info[0])):
+                    if self.info[0][i]==0:
+                        self.position = i
+                        # print("FOUND EMPTY TRACK, JUMPING TO: "+str(i))
+                        self.positionHistory.append(self.position)
+                        return
+                # print("NO POINT MOVING")
+                self.positionHistory.append(self.position)
+        else:
             #USES RUNNING MEANS TO DETERMINE THE LIKELIHOOD THAT A TRACK STATE WILL CHANGE, AND BECOME SAFE NEXT SECOND, IF >90% JUMP, ELSE JUMP TO FIRST EMPTY THIS TURN
             trackSafeness = self.doMaths()
             # print(trackSafeness)
             #if my calculations say I have a better than 90% chance of being safe, go to the best odds
-            if trackSafeness and (max(trackSafeness)>60) and (1 not in self.info[0]):
+            if trackSafeness  and (1 not in self.info[0]):
                 # print("TRUSTING MY HEAD")
                 self.position = trackSafeness.index(max(trackSafeness))
                 self.positionHistory.append(self.position)
@@ -54,27 +68,6 @@ class Hobo:
                     if self.info[0][i]==0:
                         self.position = i
                         # print("FOUND EMPTY TRACK, JUMPING TO: "+str(i))
-                        self.positionHistory.append(self.position)
-                        return
-                self.positionHistory.append(self.position)
-        else:
-            #USES RUNNING MEANS TO DETERMINE THE LIKELIHOOD THAT A TRACK STATE WILL CHANGE, AND BECOME SAFE NEXT SECOND, IF >90% JUMP, ELSE JUMP TO FIRST FROM PAPER PLANE
-            #based on my calculations i should jump to:
-            trackSafeness = self.doMaths()
-            # print(trackSafeness)
-            #if my calculations say I have a better than 60% chance of being safe, ignore paper plane
-            if trackSafeness and (max(trackSafeness)>80):
-                # print("TRUSTING MY HEAD")
-                self.position = trackSafeness.index(max(trackSafeness))
-                self.positionHistory.append(self.position)
-
-            else: 
-                # print("TRUSTING MY BUDDY")
-                
-                for i in range(len(self.info[1])):
-                    if self.info[1][i]==0:
-                        self.position = i
-                        # print("FOUND EMPTY TRACK (VIA AIRPLANE), JUMPING TO: "+str(i))
                         self.positionHistory.append(self.position)
                         return
                 self.positionHistory.append(self.position)
