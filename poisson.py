@@ -1,6 +1,7 @@
 import math
 from decimal import Decimal
 e=math.e
+import random
 
 class my_dictionary(dict): 
   

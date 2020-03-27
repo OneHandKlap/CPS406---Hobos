@@ -77,7 +77,7 @@ def simulateGame(L0,L1,numTrains,lengthOfGame,hoboSmartness,trackResults=[]):
                 # print("TRACK 1: "+str(trackResults[0]))
                 # print("TRACK 2: "+str(trackResults[1]))
                 # print(dumbledore.positionHistory)
-                #showGraphs()
+                showGraphs()
                 return score
 
         #GET PAPER PLANE
@@ -116,7 +116,7 @@ def simulateGame(L0,L1,numTrains,lengthOfGame,hoboSmartness,trackResults=[]):
         # print("DUMBLEDORE POSITION: "+str(dumbledore.position))
 
     
-    #showGraphs()
+    showGraphs()
     return score
     #return dumbledore.positionHistory
     #return "GAME OVER! SCORE: " +str(score) + " L0: "+str(sum(dumbledore.runningL0)/(len(dumbledore.runningL0)))+" L1: "+str(sum(dumbledore.runningL1)/(len(dumbledore.runningL1)))
@@ -136,18 +136,18 @@ def simulateGame(L0,L1,numTrains,lengthOfGame,hoboSmartness,trackResults=[]):
 #BEGINNING OF TESTS
 
 
-results=[[] for x in range(4)]
-for i in range(4):
-    print("CALCULATING AVERAGE OF SMARTNESS : "+str(i))
-    for j in range(100):
+# results=[[] for x in range(5)]
+# for i in range(5):
+#     print("CALCULATING AVERAGE OF SMARTNESS : "+str(i))
+#     for j in range(100):
 
-        if results[i]!= None:
-            results[i].append(simulateGame(5,3,2,100,i))
-        else:
-            results[i]=[simulateGame(5,3,2,100,i)]
-    print(results[i])
+#         if results[i]!= None:
+#             results[i].append(simulateGame(10,5,7,300,i))
+#         else:
+#             results[i]=[simulateGame(10,5,7,300,i)]
+#     print(results[i])
 
-print("SMARTNESS 0 AVG: "+str(mean(results[0])) +"\nSMARTNESS 1 AVG: "+str(mean(results[1]))+"\nSMARTNESS 2 AVG: "+str(mean(results[2]))+"\nSMARTNESS 3 AVG: "+str(mean(results[3])))
+# print("SMARTNESS 0 AVG: "+str(mean(results[0])) +"\nSMARTNESS 1 AVG: "+str(mean(results[1]))+"\nSMARTNESS 2 AVG: "+str(mean(results[2]))+"\nSMARTNESS 3 AVG: "+str(mean(results[3])))
 
 
 # fig = plt.figure(figsize = plt.figaspect(0.5))
@@ -210,3 +210,5 @@ print("SMARTNESS 0 AVG: "+str(mean(results[0])) +"\nSMARTNESS 1 AVG: "+str(mean(
 #         writer = csv.writer(csv_file, delimiter =',', quotechar ='"')
 #         for i in range (len(L0axis)):
 #             writer.writerow([L0axis[i],L1axis[i],results[i]])
+
+print(simulateGame(5,3,2,100,0))

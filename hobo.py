@@ -35,7 +35,7 @@ class Hobo:
         
         elif smartness == 2:
             #THIS SMARTNESS LEVEL JUMPS TO THE FIRST EMPTY TRACK, IF THERE ARE NO GOOD OPTIONS,USE THE PAPER PLANE (WHICH PURPORTS TO KNOW WHAT THE STATE WILL BE NEXT SECOND)
-            if (1 not in self.info[0]):
+            if (0 not in self.info[0]):
                 for i in range(len(self.info[1])):
                     if self.info[1][i]==0:
                         self.position = i
@@ -52,12 +52,13 @@ class Hobo:
                         return
                 # print("NO POINT MOVING")
                 self.positionHistory.append(self.position)
-        else:
+        elif smartness ==3:
             #USES RUNNING MEANS TO DETERMINE THE LIKELIHOOD THAT A TRACK STATE WILL CHANGE, AND BECOME SAFE NEXT SECOND, IF >90% JUMP, ELSE JUMP TO FIRST EMPTY THIS TURN
-            trackSafeness = self.doMaths()
+            
             # print(trackSafeness)
             #if my calculations say I have a better than 90% chance of being safe, go to the best odds
-            if trackSafeness  and (1 not in self.info[0]):
+            if self.runningL0 and self.runningL1  and (0 not in self.info[0]):
+                trackSafeness = self.doMaths()
                 # print("TRUSTING MY HEAD")
                 self.position = trackSafeness.index(max(trackSafeness))
                 self.positionHistory.append(self.position)
@@ -71,7 +72,25 @@ class Hobo:
                         self.positionHistory.append(self.position)
                         return
                 self.positionHistory.append(self.position)
-        
+        else:
+            if self.runningL0 and self.runningL1:
+                trackSafeness = self.doMaths()
+                # print("TRUSTING MY HEAD")
+                while self.info[0][trackSafeness.index(max(trackSafeness))] != 0 and len(trackSafeness)>1:
+                    trackSafeness.pop(trackSafeness.index(max(trackSafeness)))
+                    
+                self.position = trackSafeness.index(max(trackSafeness))
+                self.positionHistory.append(self.position)
+                # print("DID MATH JUMPING TO: "+str(self.position))
+            else:
+                # print("TRUSTING MY GUT")
+                for i in range(len(self.info[0])):
+                    if self.info[0][i]==0:
+                        self.position = i
+                        # print("FOUND EMPTY TRACK, JUMPING TO: "+str(i))
+                        self.positionHistory.append(self.position)
+                        return
+                self.positionHistory.append(self.position)
 
     def updateResults(self):
 
