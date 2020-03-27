@@ -1,5 +1,7 @@
 import math as math
 import matplotlib.pyplot as plt
+import pandas as pd
+import csv
 from matplotlib import cm
 import poisson
 from statistics import mean
@@ -60,7 +62,7 @@ def simulateGame(L0,L1,numTrains,lengthOfGame,hoboSmartness,trackResults=[]):
     score=lengthOfGame
     for i in range(lengthOfGame):
 
-        #print("SECOND: "+str(i))
+        # print("SECOND: "+str(i))
         # print("DUMBLEDORE POSITION: "+str(dumbledore.position))
         
         
@@ -72,12 +74,15 @@ def simulateGame(L0,L1,numTrains,lengthOfGame,hoboSmartness,trackResults=[]):
             #O SHIT, HE DED END THE GAME
             if dumbledore.hp==0:
                 score=i
+                # print("TRACK 1: "+str(trackResults[0]))
+                # print("TRACK 2: "+str(trackResults[1]))
+                # print(dumbledore.positionHistory)
                 #showGraphs()
                 return score
 
         #GET PAPER PLANE
         paperPlane=[]
-        if (random.randint(1,100)<=90) and i<lengthOfGame-1:
+        if (random.randint(1,100)<=99) and i<lengthOfGame-1:
             
             for y in range(numTrains):
                 paperPlane.append(trackResults[y][i+1])
@@ -92,9 +97,7 @@ def simulateGame(L0,L1,numTrains,lengthOfGame,hoboSmartness,trackResults=[]):
         #LOOKS AROUND AT TRAINS
 
         dumbledore.lookAtTracks(i,trackResults)
-        acc=[]
-        for j in range(numTrains):
-            acc.append(trackResults[j][i])
+
         # print("WHAT IS ON THE TRACK NOW: "+str(acc))
         # print("WHAT DUMBLEDORE SEES: "+str(dumbledore.info[0]))
         # # print("DUMBLEDORE HP: "+str(dumbledore.hp))
@@ -122,12 +125,12 @@ def simulateGame(L0,L1,numTrains,lengthOfGame,hoboSmartness,trackResults=[]):
 # results=[]
 # for j in range(100):
 #     if results!= None:
-#         results.append(simulateGame(1,3,2,400,1))
+#         results.append(simulateGame(5,3,2,50,1))
 #     else:
-#         results=[simulateGame(1,3,2,400,1)]
+#         results=[simulateGame(5,3,2,50,1)]
 # print(results)
 # print(mean(results))
-#print(simulateGame(5,4,2,400,3))
+
 
 
 #BEGINNING OF TESTS
@@ -135,21 +138,21 @@ def simulateGame(L0,L1,numTrains,lengthOfGame,hoboSmartness,trackResults=[]):
 
 results=[[] for x in range(4)]
 for i in range(4):
-    print("CALCULATING AVERAGE OF SMARTNESS : "+str(i+1))
+    print("CALCULATING AVERAGE OF SMARTNESS : "+str(i))
     for j in range(100):
 
         if results[i]!= None:
-            results[i].append(simulateGame(5,3,2,100,i+1))
+            results[i].append(simulateGame(5,3,2,100,i))
         else:
-            results[i]=[simulateGame(5,3,2,100,i+1)]
+            results[i]=[simulateGame(5,3,2,100,i)]
     print(results[i])
 
-print("SMARTNESS 1 AVG: "+str(mean(results[0])) +"\nSMARTNESS 2 AVG: "+str(mean(results[1]))+"\nSMARTNESS 3 AVG: "+str(mean(results[2]))+"\nSMARTNESS 4 AVG: "+str(mean(results[3])))
+print("SMARTNESS 0 AVG: "+str(mean(results[0])) +"\nSMARTNESS 1 AVG: "+str(mean(results[1]))+"\nSMARTNESS 2 AVG: "+str(mean(results[2]))+"\nSMARTNESS 3 AVG: "+str(mean(results[3])))
 
 
 # fig = plt.figure(figsize = plt.figaspect(0.5))
 
-# for numTrains in range(1,8):
+# for numTrains in range(2,10,2):
 
 #     results=[]
 #     L0axis=[]
@@ -167,7 +170,7 @@ print("SMARTNESS 1 AVG: "+str(mean(results[0])) +"\nSMARTNESS 2 AVG: "+str(mean(
 #                 L1axis.append(L1)
 
     
-#     ax = fig.add_subplot(4,2,numTrains, projection = '3d')
+#     ax = fig.add_subplot(2,2,numTrains/2, projection = '3d')
 #     L0axis=np.array(L0axis)
 #     L1axis=np.array(L1axis)
 
@@ -181,7 +184,29 @@ print("SMARTNESS 1 AVG: "+str(mean(results[0])) +"\nSMARTNESS 2 AVG: "+str(mean(
 
 # plt.show()
 
-
-
-
-#print(simulateGame(5,3,2,100,1))
+# for numTrains in range(2,10,2):
+#     headers=["L0 Mean","L1 Mean","Score"]
+#     results=[]
+#     L0axis=[]
+#     L1axis=[]
+#     for L0 in range(1,15):
+#         for L1 in range(1,15):
+#             L0axis.append(L0)
+#             L1axis.append(L1)
+#             #print("CALCULATING AVERAGE OF SMARTNESS : "+str(i+1))
+#             for j in range(10):
+#                 theseResults=[]
+#                 if results!= None:
+#                     theseResults.append(simulateGame(L0,L1,numTrains,100,3))
+#                 else:
+#                     theseResults=[simulateGame(L0,L1,numTrains,100,3)]
+#                 results.append(mean(theseResults))
+#     fileName = "Hobo level 0 - #Trains "+str(numTrains)
+#     # collapsedData = [L0axis,L1axis,results]
+#     # collapsedData = zip(collapsedData)
+#     # print (collapsedData)
+    
+#     with open(fileName+".csv", mode='w') as csv_file:
+#         writer = csv.writer(csv_file, delimiter =',', quotechar ='"')
+#         for i in range (len(L0axis)):
+#             writer.writerow([L0axis[i],L1axis[i],results[i]])

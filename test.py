@@ -13,9 +13,5 @@ class hobo_test(unittest.TestCase):
 
         self.assertEqual(results,[0,0,0,0,0])
 
-    # def test_hobo_2(self):
-    #     hobo = Hobo ()
-    #     data=[[0,1],[1,0,1],[1,1,1,0],[0,1,1,0,0],[1,1,1,1,1,1]]
-
 if __name__ =='__main__':
     unittest.main()
