@@ -43,7 +43,7 @@ class Hobo:
             trackSafeness = self.doMaths()
             # print(trackSafeness)
             #if my calculations say I have a better than 90% chance of being safe, go to the best odds
-            if trackSafeness and (max(trackSafeness)>90):
+            if trackSafeness and (max(trackSafeness)>60) and (1 not in self.info[0]):
                 # print("TRUSTING MY HEAD")
                 self.position = trackSafeness.index(max(trackSafeness))
                 self.positionHistory.append(self.position)
@@ -63,7 +63,7 @@ class Hobo:
             trackSafeness = self.doMaths()
             # print(trackSafeness)
             #if my calculations say I have a better than 60% chance of being safe, ignore paper plane
-            if trackSafeness and (max(trackSafeness)>90):
+            if trackSafeness and (max(trackSafeness)>80):
                 # print("TRUSTING MY HEAD")
                 self.position = trackSafeness.index(max(trackSafeness))
                 self.positionHistory.append(self.position)
