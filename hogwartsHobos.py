@@ -1,5 +1,6 @@
 import math as math
 import matplotlib.pyplot as plt
+from numpy.polynomial.polynomial import polyfit
 import pandas as pd
 import csv
 from matplotlib import cm
@@ -136,18 +137,18 @@ def simulateGame(L0,L1,numTrains,lengthOfGame,hoboSmartness,trackResults=[]):
 #BEGINNING OF TESTS
 
 
-results=[[] for x in range(5)]
-for i in range(5):
-    print("CALCULATING AVERAGE OF SMARTNESS : "+str(i))
-    for j in range(10):
+# results=[[] for x in range(5)]
+# for i in range(5):
+#     print("CALCULATING AVERAGE OF SMARTNESS : "+str(i))
+#     for j in range(10):
 
-        if results[i]!= None:
-            results[i].append(simulateGame(10,5,7,1000,i))
-        else:
-            results[i]=[simulateGame(10,5,7,1000,i)]
-    #print(results[i])
+#         if results[i]!= None:
+#             results[i].append(simulateGame(10,5,7,1000,i))
+#         else:
+#             results[i]=[simulateGame(10,5,7,1000,i)]
+#     #print(results[i])
 
-print("SMARTNESS 0 AVG: "+str(mean(results[0])) +"\nSMARTNESS 1 AVG: "+str(mean(results[1]))+"\nSMARTNESS 2 AVG: "+str(mean(results[2]))+"\nSMARTNESS 3 AVG: "+str(mean(results[3]))+"\nSMARTNESS 4 AVG: "+str(mean(results[4])))
+# print("SMARTNESS 0 AVG: "+str(mean(results[0])) +"\nSMARTNESS 1 AVG: "+str(mean(results[1]))+"\nSMARTNESS 2 AVG: "+str(mean(results[2]))+"\nSMARTNESS 3 AVG: "+str(mean(results[3]))+"\nSMARTNESS 4 AVG: "+str(mean(results[4])))
 
 
 
@@ -185,30 +186,54 @@ print("SMARTNESS 0 AVG: "+str(mean(results[0])) +"\nSMARTNESS 1 AVG: "+str(mean(
 
 #     plt.show()
 
-# for numTrains in range(2,10,2):
-#     headers=["L0 Mean","L1 Mean","Score"]
-#     results=[]
-#     L0axis=[]
-#     L1axis=[]
-#     for L0 in range(1,15):
-#         for L1 in range(1,15):
-#             L0axis.append(L0)
-#             L1axis.append(L1)
-#             #print("CALCULATING AVERAGE OF SMARTNESS : "+str(i+1))
-#             for j in range(10):
-#                 theseResults=[]
-#                 if results!= None:
-#                     theseResults.append(simulateGame(L0,L1,numTrains,100,3))
-#                 else:
-#                     theseResults=[simulateGame(L0,L1,numTrains,100,3)]
-#                 results.append(mean(theseResults))
-#     fileName = "Hobo level 0 - #Trains "+str(numTrains)
-#     # collapsedData = [L0axis,L1axis,results]
-#     # collapsedData = zip(collapsedData)
-#     # print (collapsedData)
-    
-#     with open(fileName+".csv", mode='w') as csv_file:
-#         writer = csv.writer(csv_file, delimiter =',', quotechar ='"')
-#         for i in range (len(L0axis)):
-#             writer.writerow([L0axis[i],L1axis[i],results[i]])
 
+
+# results0=[]
+# results4=[]
+# x=[]
+# for i in range (30,150,10):
+#     x.append(i)
+#     meanResult0=[]
+#     meanResult4=[]
+#     for j in range(25):
+#         meanResult0.append(simulateGame(7,7,5,i,0))
+#         meanResult4.append(simulateGame(7,7,5,i,4))
+#     results0.append(20/mean(meanResult0))
+#     results4.append(20/mean(meanResult4))
+# fig,ax = plt.subplots(2)
+# fig.suptitle("Comparison of Hit-Rate")
+# custom_ylim=(0,1)
+# custom_xlim=(30,150)
+
+# x=np.array(x)
+# ax[0].plot(x,results0,'ro')
+
+# ax[0].set_title("Hobo Level 0")
+# b,m = polyfit(x,results0,1)
+# ax[0].plot(x,b+m*x,'-')
+# ax[1].plot(x,results4,'ro')
+# b,m = polyfit(x,results4,1)
+# ax[1].set_title("Hobo level 4")
+# ax[1].plot(x,b+m*x,'-')
+
+# plt.setp(ax, ylim=custom_ylim,xlim=custom_xlim)
+# plt.show()
+
+
+def displayOverallAverages():
+    for hoboLevel in range(5):
+        avgScore=[]
+        for numTrains in range(2,10,2):
+
+            results=[]
+            for L0 in range(1,15,2):
+                for L1 in range(1,15,2):
+                    #print("CALCULATING AVERAGE OF SMARTNESS : "+str(i+1))
+                    for j in range(10):
+
+                        if results!= None:
+                            results.append(simulateGame(L0,L1,numTrains,500,hoboLevel))
+                        else:
+                            results=[simulateGame(L0,L1,numTrains,500,hoboLevel)]
+            avgScore.append(mean(results))
+        print("Hobo Level: "+str(hoboLevel)+" Overall Average Score: "+str(mean(avgScore))+"\n")
