@@ -131,8 +131,8 @@ class Hobo:
                 trackSafeness=[]
                 runningMeanL0=sum(self.runningL0)/(len(self.runningL0))
                 runningMeanL1=sum(self.runningL1)/(len(self.runningL1))
-                print(runningMeanL0)
-                print(runningMeanL1)
+                # print(runningMeanL0)
+                # print(runningMeanL1)
 
                 for x in self.runningResults:
                     if x[0]== 0: #track is empty
@@ -166,3 +166,11 @@ class Hobo:
 
     def lookAtTracks(self,num,listOfTrackResults):
         self.info[0]= [x[num] for x in listOfTrackResults]
+
+# L0 - Average time between trains
+# L1 - Average time of train on tracks
+# hobo = Hobo()
+# hobo.runningResults=[[0, 0]]
+# hobo.runningL0 = [0]
+# hobo.runningL1 = [5]
+# print(hobo.doMaths())

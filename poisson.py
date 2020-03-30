@@ -35,4 +35,9 @@ def poissonValues(mean):
 # print(poisson(100, 0.15) * 100)
 # # print(poisson(1, 0.15) * 100)
 # # print(poisson(2, 0.15) * 100)
-# print(poissonValues(8))
+# print(poissonValues(120.708))
+
+# for i in range(1000, 2000):
+#     print(i)
+#     if poissonValues(i / 10) == {}:
+#         break
