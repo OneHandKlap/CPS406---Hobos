@@ -83,7 +83,7 @@ def simulateGame(L0,L1,numTrains,lengthOfGame,hoboSmartness,trackResults=[]):
 
         #GET PAPER PLANE
         paperPlane=[]
-        if (random.randint(1,100)<=99) and i<lengthOfGame-1:
+        if (random.randint(1,100)<=75) and i<lengthOfGame-1:
             
             for y in range(numTrains):
                 paperPlane.append(trackResults[y][i+1])
