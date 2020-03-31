@@ -9,7 +9,7 @@ class TrainTrack:
         self.trackOccupancy=[0]
 
     def __setattr__(self, name, value):
-        if name == "L0" or name == "L1":
+        if ((name == "L0" or name == "L1") and value==0):
             raise AttributeError("Denied. L0 and L1 values must be greater than 0")
         else:
             object.__setattr__(self,name,value)
@@ -53,3 +53,6 @@ class TrainTrack:
             else:
                 self.trackOccupancy.append(0)
         return self.trackOccupancy
+
+
+train = TrainTrack(1,2)

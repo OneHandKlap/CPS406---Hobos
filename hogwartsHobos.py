@@ -63,21 +63,13 @@ def simulateGame(L0,L1,numTrains,lengthOfGame,hoboSmartness,trackResults=[]):
     score=lengthOfGame
     for i in range(lengthOfGame):
 
-        # print("SECOND: "+str(i))
-        # print("DUMBLEDORE POSITION: "+str(dumbledore.position))
-        
-        
-
         #DID HE GET HIT?
         if trackResults[dumbledore.position][i]==1:
             dumbledore.hp-=1
-            # print("DUMBLEDORE GOT HIT")
             #O SHIT, HE DED END THE GAME
             if dumbledore.hp==0:
                 score=i
-                # print("TRACK 1: "+str(trackResults[0]))
-                # print("TRACK 2: "+str(trackResults[1]))
-                # print(dumbledore.positionHistory)
+
                 #showGraphs()
                 return score
 
@@ -87,137 +79,98 @@ def simulateGame(L0,L1,numTrains,lengthOfGame,hoboSmartness,trackResults=[]):
             
             for y in range(numTrains):
                 paperPlane.append(trackResults[y][i+1])
-            #print("THIS PLANE IS TRUE: "+str(paperPlane))
-            #print()
+
         else:
             for y in range(numTrains):
                 paperPlane.append(random.randint(0,1))
             dumbledore.getSuggestion(paperPlane)
-        # print("PAPER PLANE INFO: "+str(paperPlane))
+
 
         #LOOKS AROUND AT TRAINS
 
         dumbledore.lookAtTracks(i,trackResults)
 
-        # print("WHAT IS ON THE TRACK NOW: "+str(acc))
-        # print("WHAT DUMBLEDORE SEES: "+str(dumbledore.info[0]))
-        # # print("DUMBLEDORE HP: "+str(dumbledore.hp))
 
         #STORES WHAT HE SEES
-        dumbledore.updateResults()
-        # # print("DUMBLEDORE'S MEMORY: "+str(dumbledore.runningResults))
-        # print("RUNNING L0: "+str(dumbledore.runningL0))
-        # print("RUNNING L1: "+str(dumbledore.runningL1))
-        
+        dumbledore.updateResults()   
         
 
         #JUMP
         dumbledore.act(hoboSmartness)
-        # print("POSITION HISTORY : "+str(dumbledore.positionHistory))
-        # print("DUMBLEDORE POSITION: "+str(dumbledore.position))
 
     
     #showGraphs()
     return score
-    #return dumbledore.positionHistory
-    #return "GAME OVER! SCORE: " +str(score) + " L0: "+str(sum(dumbledore.runningL0)/(len(dumbledore.runningL0)))+" L1: "+str(sum(dumbledore.runningL1)/(len(dumbledore.runningL1)))
+
+#DISPLAY METHODS
+
+def overallAverageGraphs():
+    for hoboLevel in range(5):
+        fig = plt.figure(figsize = plt.figaspect(0.5))
+        for numTrains in range(2,10,2):
+
+            results=[]
+            L0axis=[]
+            L1axis=[]
+            for L0 in range(1,17,2):
+                for L1 in range(1,17,2):
+                    #print("CALCULATING AVERAGE OF SMARTNESS : "+str(i+1))
+                    for j in range(10):
+
+                        if results!= None:
+                            results.append(simulateGame(L0,L1,numTrains,500,hoboLevel))
+                        else:
+                            results=[simulateGame(L0,L1,numTrains,500,hoboLevel)]
+                        L0axis.append(L0)
+                        L1axis.append(L1)
+
+            
+            ax = fig.add_subplot(2,2,numTrains/2, projection = '3d')
+            L0axis=np.array(L0axis)
+            L1axis=np.array(L1axis)
+
+            results=np.array(results)
+
+            ax.plot_trisurf(L0axis,L1axis,results,linewidth=0, antialiased=False)
+
+            plt.title("Score Hobo Level"+str(hoboLevel)+" - #Trains: "+str(numTrains))
+            plt.xlabel("L0 mean")
+            plt.ylabel("L1 mean")
+
+        plt.show()
 
 
-# results=[]
-# for j in range(100):
-#     if results!= None:
-#         results.append(simulateGame(5,3,2,50,1))
-#     else:
-#         results=[simulateGame(5,3,2,50,1)]
-# print(results)
-# print(mean(results))
+def hitRateComparisonGraph():
+    results0=[]
+    results4=[]
+    x=[]
+    for i in range (30,150,10):
+        x.append(i)
+        meanResult0=[]
+        meanResult4=[]
+        for j in range(25):
+            meanResult0.append(simulateGame(7,7,5,i,0))
+            meanResult4.append(simulateGame(7,7,5,i,4))
+        results0.append(20/mean(meanResult0))
+        results4.append(20/mean(meanResult4))
+    fig,ax = plt.subplots(2)
+    fig.suptitle("Comparison of Hit-Rate")
+    custom_ylim=(0,1)
+    custom_xlim=(30,150)
 
+    x=np.array(x)
+    ax[0].plot(x,results0,'ro')
 
+    ax[0].set_title("Hobo Level 0")
+    b,m = polyfit(x,results0,1)
+    ax[0].plot(x,b+m*x,'-')
+    ax[1].plot(x,results4,'ro')
+    b,m = polyfit(x,results4,1)
+    ax[1].set_title("Hobo level 4")
+    ax[1].plot(x,b+m*x,'-')
 
-#BEGINNING OF TESTS
-
-
-# results=[[] for x in range(5)]
-# for i in range(5):
-#     print("CALCULATING AVERAGE OF SMARTNESS : "+str(i))
-#     for j in range(10):
-
-#         if results[i]!= None:
-#             results[i].append(simulateGame(10,5,7,1000,i))
-#         else:
-#             results[i]=[simulateGame(10,5,7,1000,i)]
-#     #print(results[i])
-
-# print("SMARTNESS 0 AVG: "+str(mean(results[0])) +"\nSMARTNESS 1 AVG: "+str(mean(results[1]))+"\nSMARTNESS 2 AVG: "+str(mean(results[2]))+"\nSMARTNESS 3 AVG: "+str(mean(results[3]))+"\nSMARTNESS 4 AVG: "+str(mean(results[4])))
-
-
-
-# for hoboLevel in range(5):
-#     fig = plt.figure(figsize = plt.figaspect(0.5))
-#     for numTrains in range(2,10,2):
-
-#         results=[]
-#         L0axis=[]
-#         L1axis=[]
-#         for L0 in range(1,15,2):
-#             for L1 in range(1,15,2):
-#                 #print("CALCULATING AVERAGE OF SMARTNESS : "+str(i+1))
-#                 for j in range(10):
-
-#                     if results!= None:
-#                         results.append(simulateGame(L0,L1,numTrains,100,hoboLevel))
-#                     else:
-#                         results=[simulateGame(L0,L1,numTrains,100,hoboLevel)]
-#                     L0axis.append(L0)
-#                     L1axis.append(L1)
-
-        
-#         ax = fig.add_subplot(2,2,numTrains/2, projection = '3d')
-#         L0axis=np.array(L0axis)
-#         L1axis=np.array(L1axis)
-
-#         results=np.array(results)
-
-#         ax.plot_trisurf(L0axis,L1axis,results,linewidth=0, antialiased=False)
-#         title="Hobo Level: "+str(hoboLevel)+"; Trains: " +str(numTrains) +".png"
-#         plt.title("Score Hobo Level 3 - #Trains: "+str(numTrains))
-#         plt.xlabel("L0 mean")
-#         plt.ylabel("L1 mean")
-
-#     plt.show()
-
-
-
-# results0=[]
-# results4=[]
-# x=[]
-# for i in range (30,150,10):
-#     x.append(i)
-#     meanResult0=[]
-#     meanResult4=[]
-#     for j in range(25):
-#         meanResult0.append(simulateGame(7,7,5,i,0))
-#         meanResult4.append(simulateGame(7,7,5,i,4))
-#     results0.append(20/mean(meanResult0))
-#     results4.append(20/mean(meanResult4))
-# fig,ax = plt.subplots(2)
-# fig.suptitle("Comparison of Hit-Rate")
-# custom_ylim=(0,1)
-# custom_xlim=(30,150)
-
-# x=np.array(x)
-# ax[0].plot(x,results0,'ro')
-
-# ax[0].set_title("Hobo Level 0")
-# b,m = polyfit(x,results0,1)
-# ax[0].plot(x,b+m*x,'-')
-# ax[1].plot(x,results4,'ro')
-# b,m = polyfit(x,results4,1)
-# ax[1].set_title("Hobo level 4")
-# ax[1].plot(x,b+m*x,'-')
-
-# plt.setp(ax, ylim=custom_ylim,xlim=custom_xlim)
-# plt.show()
+    plt.setp(ax, ylim=custom_ylim,xlim=custom_xlim)
+    plt.show()
 
 
 def displayOverallAverages():
@@ -237,3 +190,5 @@ def displayOverallAverages():
                             results=[simulateGame(L0,L1,numTrains,500,hoboLevel)]
             avgScore.append(mean(results))
         print("Hobo Level: "+str(hoboLevel)+" Overall Average Score: "+str(mean(avgScore))+"\n")
+
+overallAverageGraphs()
