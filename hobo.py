@@ -96,8 +96,7 @@ class Hobo:
 
         #update the running memory of HOBO
         #the idea is that state changes are important, they are what feed the runningmean values for L0 and L1
-        # print("THIS TRACK: "+str(self.info[0]))
-        # print("HOBO MEMORY: "+str(self.runningResults))
+
         for i in range(len(self.info[0])):
             if self.runningResults[i][0]==self.info[0][i]:
                 self.runningResults[i].append(self.info[0][i])
@@ -111,10 +110,6 @@ class Hobo:
                     self.runningL1.append(len(self.runningResults[i]))
                     self.runningResults[i]=[]
                     self.runningResults[i].append(self.info[0][i])
-        # except(IndexError):
-        #     return (self.info[0])
-        #     for i in range(len(self.info[0])):
-        #         self.runningResults[i].append(self.info[0][i])
 
     def doMaths(self):
 
