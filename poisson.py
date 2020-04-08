@@ -31,13 +31,3 @@ def poissonValues(mean):
     for i in range(1,len(trainChance.keys())):
         trainChance[keys[i]]=trainChance[keys[i]]+trainChance[keys[i]-1]
     return trainChance
-
-# print(poisson(100, 0.15) * 100)
-# # print(poisson(1, 0.15) * 100)
-# # print(poisson(2, 0.15) * 100)
-# print(poissonValues(120.708))
-
-# for i in range(1000, 2000):
-#     print(i)
-#     if poissonValues(i / 10) == {}:
-#         break

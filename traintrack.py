@@ -53,10 +53,3 @@ class TrainTrack:
             else:
                 self.trackOccupancy.append(0)
         return self.trackOccupancy
-
-# L0 - Average time between trains
-# L1 - Average time of train on tracks
-# if L0 is increasing there is more 0's than 1's
-# if L1 increased there is more 1's than 0's
-# train = TrainTrack(3, 10)
-# print(train.simulate(20))

@@ -63,6 +63,7 @@ class poissonValue_test(unittest.TestCase):
         }
         self.assertEqual(answer, value)
     
+    # There is a hard upper limit for poissonValues() and number of tracks
     # poissonValues() does not produce distributions greater than 99
     # Past 120.708, the function produces empty dictionaries
     # def testExtreme(self):
@@ -73,6 +74,8 @@ class poissonValue_test(unittest.TestCase):
 
 
 # Test3: simulate() TEST FOR LENGTH AND COUNT OF 0's and 1's depending on l0/l1
+# L0 and L2 must be greater than 0
+# Revised version will return NULL test1, test2, test3
 class simulate_test(unittest.TestCase):
     def testZeroL0L1(self):
         train = TrainTrack(0, 0)
@@ -92,10 +95,11 @@ class simulate_test(unittest.TestCase):
 
     # Both Zero and One length tracks return a list of length 1.
     # The track always start without a train present on the track therefore the first element is 0.
-    def testLength0(self):
-        train = TrainTrack(0, 0)
-        value = train.simulate(0)
-        self.assertEqual([0], value)
+    # Test1 - simulate(0) should not work
+    # def testLength0(self):
+    #     train = TrainTrack(0, 0)
+    #     value = train.simulate(0)
+    #     self.assertEqual([0], value)
     
     def testLength1(self):
         train = TrainTrack(1, 1)
@@ -121,9 +125,9 @@ class simulate_test(unittest.TestCase):
     def testCountOffTrack(self):
         count0 = 0
         count1 = 0
-        for i in range(100):
+        for i in range(1, 100):
             train = TrainTrack(i, i // 2)
-            for j in range(100):
+            for j in range(1, 100):
                 list = train.simulate(j)[1:]
                 count0 += list.count(0)
                 count1 += list.count(1)
@@ -134,9 +138,9 @@ class simulate_test(unittest.TestCase):
     def testCountOnTrack(self):
         count0 = 0
         count1 = 0
-        for i in range(100):
+        for i in range(1, 100):
             train = TrainTrack(i // 2, i)
-            for j in range(100):
+            for j in range(1, 100):
                 list = train.simulate(j)[1:]
                 count0 += list.count(0)
                 count1 += list.count(1)
@@ -157,18 +161,48 @@ class doMaths_test(unittest.TestCase):
     
     def testGuaranteedSafe(self):
         hobo = Hobo()
-        hobo.runningResults=[[0]]
-        hobo.runningL0 = [0]
-        hobo.runningL1 = [0]
+        hobo.runningResults=[[0, 0]]
+        hobo.runningL0 = [1000]
+        hobo.runningL1 = [5]
         value = hobo.doMaths()
         answer = [100]
         self.assertEqual(answer, value)
 
 
 # Test5: act()
+# Smartness 1, 2, 3 - jump to empty track but if not then do special function
+# Smartness 0 - random
+# Smartness 1 - make sure hobo jumps into empty track. Query track results for 0.
+# Smartness 2 - test get paper plane loop in main code.
+# Smartness 3 - Check if hobo is using max safeness track. Only use math if there is no good options.
+# else - Math all the time
 class act_test(unittest.TestCase):
-    def test(self):
-        self.assertEqual(0, 0)
+    # def testSmartness1(self):
+    #     self.assertEqual(0, 0) NOT TESTING BECAUSE RANDOM
+    
+    def testSmartness2(self):
+        hobo = Hobo()
+        hobo.info = [[1, 1], [1, 0]] #Second list is paper plane.
+        hobo.act(2)
+        self.assertEqual([0, 1], hobo.positionHistory)
+    
+    def testSmartness3(self):
+        hobo = Hobo()
+        hobo.info = [[1, 1], []]
+        hobo.runningResults = [[1, 1, 1, 1, 1], [0, 0]]
+        hobo.runningL0 = [8, 10]
+        hobo.runningL1 = [5, 3]
+        hobo.act(3)
+        self.assertEqual([0, 1], hobo.positionHistory)
+    
+    def testSmartness4(self):
+        hobo = Hobo()
+        hobo.runningResults = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [0, 0, 0, 0]]
+        hobo.runningL0 = [15, 20]
+        hobo.runningL1 = [10, 5]
+        hobo.info = [[0, 0], []]
+        hobo.act(4)
+        self.assertEqual([0, 1], hobo.positionHistory)
 
 
 if __name__ == '__main__':
