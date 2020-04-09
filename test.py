@@ -177,8 +177,11 @@ class doMaths_test(unittest.TestCase):
 # Smartness 3 - Check if hobo is using max safeness track. Only use math if there is no good options.
 # else - Math all the time
 class act_test(unittest.TestCase):
-    # def testSmartness1(self):
-    #     self.assertEqual(0, 0) NOT TESTING BECAUSE RANDOM
+    def testSmartness1(self):
+        hobo = Hobo()
+        hobo.info = [[1, 0], []]
+        hobo.act(1)
+        self.assertEqual([0, 1], hobo.positionHistory)
     
     def testSmartness2(self):
         hobo = Hobo()
