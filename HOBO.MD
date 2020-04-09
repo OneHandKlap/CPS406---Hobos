@@ -5,11 +5,20 @@ Hobos are datastructures that store and use track information to model the behav
 
 ## Instance Variables:
 
-### self.HP: pretty self-explanatory, this just represents the total number of times that the Hobo may be hit before the game ends. This number was arbitrarily set.
-### self.info: This 2d array represents two time slices of TrainTrack information. The first array, info[0] represents what the Hobo sees as the state of the train tracks right now, and is gather by him "looking around." The second array, info[1] represents what the traintracks will be in the following second. The only way in which this array is populated is by the paper plane, which may or may not be accurate (the veracity rating was arbitrarily set to 60%)
-### self.runningResults: This 2d array represents the hobos memories of trains that have passed. As long as a track's state has not changed (ie. it stays empty or stays full) a 1 or 0 will be appended to the list at the index that corresponds with the track number. When the state does change, that index is replaced by the new value. In this way the hobo is remarking the duration of particular states and can use it to calculate runningL0 and L1 values
-### self.runningL0 & self.running L1: These lists use values from running results in order to compute what the hobo determines is the likely value based on the train tracks behaviour up until this point
-### self.positionHistory: a list of all the track numbers that the hobo has been on for the duration of the game
+### self.HP: 
+pretty self-explanatory, this just represents the total number of times that the Hobo may be hit before the game ends. This number was arbitrarily set.
+
+### self.info: 
+This 2d array represents two time slices of TrainTrack information. The first array, info[0] represents what the Hobo sees as the state of the train tracks right now, and is gather by him "looking around." The second array, info[1] represents what the traintracks will be in the following second. The only way in which this array is populated is by the paper plane, which may or may not be accurate (the veracity rating was arbitrarily set to 60%)
+
+### self.runningResults: 
+This 2d array represents the hobos memories of trains that have passed. As long as a track's state has not changed (ie. it stays empty or stays full) a 1 or 0 will be appended to the list at the index that corresponds with the track number. When the state does change, that index is replaced by the new value. In this way the hobo is remarking the duration of particular states and can use it to calculate runningL0 and L1 values
+
+### self.runningL0 & self.running L1: 
+These lists use values from running results in order to compute what the hobo determines is the likely value based on the train tracks behaviour up until this point
+
+### self.positionHistory: 
+a list of all the track numbers that the hobo has been on for the duration of the game
 
  ## API
 
