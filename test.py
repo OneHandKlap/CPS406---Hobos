@@ -46,7 +46,7 @@ class poissonValue_test(unittest.TestCase):
             18: int(round(0.709))
         }
         self.assertEqual(answer, value)
-    
+
     def testOne(self):
         value = {}
         data = poisson.poissonValues(1)
@@ -62,15 +62,10 @@ class poissonValue_test(unittest.TestCase):
             4: int(round(1.533))
         }
         self.assertEqual(answer, value)
-    
+
     # There is a hard upper limit for poissonValues() and number of tracks
     # poissonValues() does not produce distributions greater than 99
     # Past 120.708, the function produces empty dictionaries
-    # def testExtreme(self):
-    #     value = {}
-    #     data = poisson.poissonValues(100)
-    #     previous = 0
-    #     self.assertEqual(answer, value)
 
 
 # Test3: simulate() TEST FOR LENGTH AND COUNT OF 0's and 1's depending on l0/l1
@@ -81,12 +76,12 @@ class simulate_test(unittest.TestCase):
         train = TrainTrack(0, 0)
         value = 0 in train.simulate(20)[1:]
         self.assertEqual(False, value)
-    
+
     def testZeroL0(self):
         train = TrainTrack(0, 10)
         value = 0 in train.simulate(20)[1:]
         self.assertEqual(False, value)
-    
+
     # There can still be a train on the track regardless if L1 is 0.
     def testZeroL1(self):
         train = TrainTrack(10, 0)
@@ -100,7 +95,7 @@ class simulate_test(unittest.TestCase):
     #     train = TrainTrack(0, 0)
     #     value = train.simulate(0)
     #     self.assertEqual([0], value)
-    
+
     def testLength1(self):
         train = TrainTrack(1, 1)
         value = train.simulate(1)
@@ -110,17 +105,17 @@ class simulate_test(unittest.TestCase):
         train = TrainTrack(10, 10)
         answer = len(train.simulate(10))
         self.assertEqual(10, answer)
-    
+
     def testLength100(self):
         train = TrainTrack(10, 10)
         answer = len(train.simulate(100))
         self.assertEqual(100, answer)
-    
+
     def testLength1000(self):
         train = TrainTrack(10, 10)
         answer = len(train.simulate(1000))
         self.assertEqual(1000, answer)
-    
+
     # If L0 is increasing there is more 0's than 1's
     def testCountOffTrack(self):
         count0 = 0
@@ -133,7 +128,7 @@ class simulate_test(unittest.TestCase):
                 count1 += list.count(1)
         answer = count0 > count1
         self.assertEqual(True, answer)
-    
+
     # If L1 increased there is more 1's than 0's
     def testCountOnTrack(self):
         count0 = 0
@@ -152,16 +147,16 @@ class simulate_test(unittest.TestCase):
 class doMaths_test(unittest.TestCase):
     def testNormal(self):
         hobo = Hobo()
-        hobo.runningResults=[[0, 0], [1, 1]]
+        hobo.runningResults = [[0, 0], [1, 1]]
         hobo.runningL0 = [3, 4]
         hobo.runningL1 = [4, 5]
         value = hobo.doMaths()
         answer = [46, 66]
         self.assertEqual(answer, value)
-    
+
     def testGuaranteedSafe(self):
         hobo = Hobo()
-        hobo.runningResults=[[0, 0]]
+        hobo.runningResults = [[0, 0]]
         hobo.runningL0 = [1000]
         hobo.runningL1 = [5]
         value = hobo.doMaths()
@@ -182,13 +177,13 @@ class act_test(unittest.TestCase):
         hobo.info = [[1, 0], []]
         hobo.act(1)
         self.assertEqual([0, 1], hobo.positionHistory)
-    
+
     def testSmartness2(self):
         hobo = Hobo()
-        hobo.info = [[1, 1], [1, 0]] #Second list is paper plane.
+        hobo.info = [[1, 1], [1, 0]]  # Second list is paper plane.
         hobo.act(2)
         self.assertEqual([0, 1], hobo.positionHistory)
-    
+
     def testSmartness3(self):
         hobo = Hobo()
         hobo.info = [[1, 1], []]
@@ -197,7 +192,7 @@ class act_test(unittest.TestCase):
         hobo.runningL1 = [5, 3]
         hobo.act(3)
         self.assertEqual([0, 1], hobo.positionHistory)
-    
+
     def testSmartness4(self):
         hobo = Hobo()
         hobo.runningResults = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [0, 0, 0, 0]]
